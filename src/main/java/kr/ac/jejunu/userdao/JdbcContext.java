@@ -155,4 +155,36 @@ public class JdbcContext {
             }
         }
     }
+
+    public void update(String sql, Object[] params) throws SQLException {
+        StatementStrategy statementStrategy = connection -> {
+
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            for(int i=0;i<params.length;i++)
+                preparedStatement.setObject(i+1, params[i]);
+            return preparedStatement;
+        };
+        jdbcContextUpdate(statementStrategy);
+    }
+
+    public Long add(String sql, Object[] params) throws ClassNotFoundException, SQLException {
+        StatementStrategy statementStrategy = connection -> {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            for(int i=0;i<params.length;i++)
+                preparedStatement.setObject(i+1, params[i]);
+            return preparedStatement;
+        };
+        return jdbcContextForAdd(statementStrategy);
+    }
+
+    public User get(String sql, Object[] params) throws ClassNotFoundException, SQLException {
+        StatementStrategy statementStrategy = connection -> {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            for(int i=0;i<params.length;i++)
+                preparedStatement.setObject(i+1, params[i]);
+
+            return preparedStatement;
+        };
+        return jdbcContextForGet(statementStrategy);
+    }
 }
