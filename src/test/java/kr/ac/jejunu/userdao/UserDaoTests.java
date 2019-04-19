@@ -10,31 +10,34 @@ import static org.hamcrest.core.Is.is;
 
 public class UserDaoTests {
 
+    UserDao userDao;
+    DaoFactory daoFactory;
     @Test
     public void testGet() throws SQLException, ClassNotFoundException {
         Long id = 1l;
         String name = "허윤호";
         String password = "1234";
-        ConnectionMaker connectionMaker = new JejuConnectionMaker();
-        UserDao userDao = new UserDao(connectionMaker);
-        User user = userDao.get(id);
-        assertThat(user.getId(), is(id));
-        assertThat(user.getName(), is(name));
-        assertThat(user.getPassword(), is(password));
-    }
+        daoFactory = new DaoFactory();
+        userDao = daoFactory.getUserDao();
 
-    @Test
-    public void HallatestGet() throws SQLException, ClassNotFoundException {
-        Long id = 1l;
-        String name = "허윤호";
-        String password = "1234";
-        ConnectionMaker connectionMaker = new HallaConnectionMaker();
-        UserDao userDao = new UserDao(connectionMaker);
         User user = userDao.get(id);
         assertThat(user.getId(), is(id));
         assertThat(user.getName(), is(name));
         assertThat(user.getPassword(), is(password));
     }
+//
+//    @Test
+//    public void HallatestGet() throws SQLException, ClassNotFoundException {
+//        Long id = 1l;
+//        String name = "허윤호";
+//        String password = "1234";
+//        ConnectionMaker connectionMaker = new HallaConnectionMaker();
+//        UserDao userDao = new UserDao(connectionMaker);
+//        User user = userDao.get(id);
+//        assertThat(user.getId(), is(id));
+//        assertThat(user.getName(), is(name));
+//        assertThat(user.getPassword(), is(password));
+//    }
 
 
     @Test
@@ -45,9 +48,8 @@ public class UserDaoTests {
         User user = new User();
         user.setName(name);
         user.setPassword(password);
-
-        ConnectionMaker connectionMaker = new JejuConnectionMaker();
-        UserDao userDao = new UserDao(connectionMaker);
+        daoFactory = new DaoFactory();
+        UserDao userDao = daoFactory.getUserDao();
         Long id = userDao.add(user);
         User resultUser = userDao.get(id);
 
